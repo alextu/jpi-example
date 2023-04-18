@@ -28,7 +28,12 @@ jenkinsPlugin {
 
 
     enableSpotBugs()
+    enableCheckstyle()
+    enableJacoco()
+}
 
+checkstyle {
+  ignoreFailures = true
 }
 
 repositories {
