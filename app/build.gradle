@@ -26,6 +26,10 @@ jenkinsPlugin {
 
     compatibleSinceVersion = "1.0"
 
+    gitVersion {
+        versionFormat = 'rc-%d.%s'
+        gitRoot = rootProject.projectDir
+    }
 
     enableSpotBugs()
     enableCheckstyle()
@@ -34,6 +38,16 @@ jenkinsPlugin {
 
 checkstyle {
   ignoreFailures = true
+}
+
+tasks.named('generateGitVersion') {
+    doLast {
+        project.version = outputFile.get().getAsFile().text
+    }
+}
+
+tasks.named('generateJenkinsPluginClassManifest') {
+    dependsOn(tasks.named('generateGitVersion'))
 }
 
 repositories {
