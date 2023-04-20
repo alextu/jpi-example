@@ -61,7 +61,8 @@ class LazyVersion {
 
 }
 
-version = new LazyVersion('0.1', tasks.named('generateGitVersion'))
+//version = objectsnew JenkinsIncrementalsVersion('0.1')
+//version = new LazyVersion('0.1', tasks.named('generateGitVersion'))
 
 // tasks.named('generateGitVersion') {
 //     doLast {
