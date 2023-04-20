@@ -27,6 +27,7 @@ jenkinsPlugin {
     compatibleSinceVersion = "1.0"
 
     gitVersion {
+        allowDirty = true
         versionFormat = 'rc-%d.%s'
         gitRoot = rootProject.projectDir
     }
@@ -40,15 +41,43 @@ checkstyle {
   ignoreFailures = true
 }
 
-tasks.named('generateGitVersion') {
-    doLast {
-        project.version = outputFile.get().getAsFile().text
+class LazyVersion {
+
+    TaskProvider generateGitVersionTask
+    String baseVersion
+
+    LazyVersion(String baseVersion, TaskProvider generateGitVersionTask) {
+        this.baseVersion = baseVersion
+        this.generateGitVersionTask = generateGitVersionTask
+        // generateGitVersionTask.configure {
+        //     outputFile.set(new File('/tmp/version.txt'))
+        // }
     }
+
+    public String toString() {
+        def versionFile = generateGitVersionTask.get().outputFile.get().asFile
+        versionFile.exists() ? versionFile.text.trim() : baseVersion
+    }
+
 }
 
-tasks.named('generateJenkinsPluginClassManifest') {
-    dependsOn(tasks.named('generateGitVersion'))
-}
+version = new LazyVersion('0.1', tasks.named('generateGitVersion'))
+
+// tasks.named('generateGitVersion') {
+//     doLast {
+//         project.version = outputFile.get().getAsFile().text
+//     }
+// }
+
+
+// project.afterEvaluate {
+//     ['localizeMessages', 'processResources', 'sourcesJar'].each {
+//         tasks.named(it) {
+//             dependsOn(tasks.named('generateGitVersion'))
+//         }
+//     }
+// }
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
