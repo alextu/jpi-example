@@ -9,7 +9,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    id("org.jenkins-ci.jpi") version "0.48.0"
+    id("org.jenkins-ci.jpi") version "0.49.0-SNAPSHOT"
 }
 
 jenkinsPlugin {
@@ -28,7 +28,6 @@ jenkinsPlugin {
 
     gitVersion {
         allowDirty = true
-        versionFormat = 'rc-%d.%s'
         gitRoot = rootProject.projectDir
     }
 
@@ -40,44 +39,6 @@ jenkinsPlugin {
 checkstyle {
   ignoreFailures = true
 }
-
-class LazyVersion {
-
-    TaskProvider generateGitVersionTask
-    String baseVersion
-
-    LazyVersion(String baseVersion, TaskProvider generateGitVersionTask) {
-        this.baseVersion = baseVersion
-        this.generateGitVersionTask = generateGitVersionTask
-        // generateGitVersionTask.configure {
-        //     outputFile.set(new File('/tmp/version.txt'))
-        // }
-    }
-
-    public String toString() {
-        def versionFile = generateGitVersionTask.get().outputFile.get().asFile
-        versionFile.exists() ? versionFile.text.trim() : baseVersion
-    }
-
-}
-
-//version = objectsnew JenkinsIncrementalsVersion('0.1')
-//version = new LazyVersion('0.1', tasks.named('generateGitVersion'))
-
-// tasks.named('generateGitVersion') {
-//     doLast {
-//         project.version = outputFile.get().getAsFile().text
-//     }
-// }
-
-
-// project.afterEvaluate {
-//     ['localizeMessages', 'processResources', 'sourcesJar'].each {
-//         tasks.named(it) {
-//             dependsOn(tasks.named('generateGitVersion'))
-//         }
-//     }
-// }
 
 
 repositories {
