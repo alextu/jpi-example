@@ -1,2 +1,2 @@
-@Library('pipeline-library@atua/incr') _
+@Library('pipeline-library@atual/incr') _
 buildPluginWithGradle(jdkVersions: ['11'], platform: ['linux'], timeout: 180, incrementals: true)
