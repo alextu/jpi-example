@@ -36,9 +36,9 @@ jenkinsPlugin {
     // enableJacoco()
 }
 
-checkstyle {
-  ignoreFailures = true
-}
+// checkstyle {
+//   ignoreFailures = true
+// }
 
 
 repositories {
